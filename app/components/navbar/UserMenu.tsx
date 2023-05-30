@@ -1,12 +1,14 @@
 'use client';
 
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import { AiOutlineMenu } from 'react-icons/ai';
 
 import { useRouter } from 'next/navigation';
 
 import MenuItem from './MenuItem';
 import Avatar from './Avatar';
+import { useOnClickOutside } from '@/app/hooks';
+import { useLoginPopUp, useRegisterPopUp } from '@/app/zustand-hooks';
 
 interface UserMenuProps {}
 
@@ -19,10 +21,17 @@ const UserMenu: React.FC<UserMenuProps> = () => {
     setIsOpen((value) => !value);
   }, []);
 
-  const currentUser = 'd';
+  const loginPopUp = useLoginPopUp();
+  const registerPopUp = useRegisterPopUp();
+
+  const currentUser = undefined;
+
+  const ref = useRef(null);
+
+  useOnClickOutside(ref, () => setIsOpen(false));
 
   return (
-    <div className="relative">
+    <div ref={ref} className="relative">
       <div className="flex flex-row items-center gap-3">
         <div
           className="
@@ -110,14 +119,8 @@ const UserMenu: React.FC<UserMenuProps> = () => {
               </>
             ) : (
               <>
-                <MenuItem
-                  label="Login"
-                  onClick={() => router.push('/properties')}
-                />
-                <MenuItem
-                  label="Sign up"
-                  onClick={() => router.push('/properties')}
-                />
+                <MenuItem label="Login" onClick={loginPopUp.onOpen} />
+                <MenuItem label="Sign up" onClick={registerPopUp.onOpen} />
               </>
             )}
           </div>

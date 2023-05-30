@@ -1,3 +1,5 @@
+import { LoginPopUp, RegisterPopUp } from './components/auth';
+import { ClientOnly } from './components/common';
 import Navbar from './components/navbar/Navbar';
 import './globals.css';
 import { Nunito } from 'next/font/google';
@@ -20,7 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={font.className}>
-        <Navbar />
+        <ClientOnly>
+          <LoginPopUp />
+          <RegisterPopUp />
+          <Navbar />
+        </ClientOnly>
         {children}
       </body>
     </html>

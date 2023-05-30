@@ -1,5 +1,5 @@
 import Categories from './Categories';
-import Container from '../Container';
+import Container from '../common/Container';
 import Logo from './Logo';
 import Search from './Search';
 import UserMenu from './UserMenu';
