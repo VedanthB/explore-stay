@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check-format": "prettier --check 'app/**/*.{js,jsx,ts,tsx}'",
+    "check-format": "prettier --write 'app/**/*.{js,jsx,ts,tsx}'",
     "prepare": "husky install"
   },
   "dependencies": {
@@ -20,10 +20,14 @@
     "prettier": "2.8.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-icons": "^4.9.0",
     "typescript": "5.0.4"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.14",
     "eslint-config-prettier": "^8.8.0",
-    "husky": "^8.0.0"
+    "husky": "^8.0.0",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
   }
 }
