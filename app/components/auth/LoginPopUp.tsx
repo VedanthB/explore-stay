@@ -1,11 +1,12 @@
 'use client';
 
 import { useCallback, useState } from 'react';
-
+import { signIn } from 'next-auth/react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { FcGoogle } from 'react-icons/fc';
 import { AiFillGithub } from 'react-icons/ai';
 import { useRouter } from 'next/navigation';
+import { toast } from 'react-hot-toast';
 
 import Input from '../inputs/Input';
 import { Heading } from '../common';
@@ -32,6 +33,23 @@ const LoginPopUp = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
+
+    signIn('credentials', {
+      ...data,
+      redirect: false,
+    }).then((callback) => {
+      setIsLoading(false);
+
+      if (callback?.ok) {
+        toast.success('Logged in');
+        router.refresh();
+        loginPopUp.onClose();
+      }
+
+      if (callback?.error) {
+        toast.error(callback.error);
+      }
+    });
   };
 
   const onToggle = useCallback(() => {
@@ -69,13 +87,13 @@ const LoginPopUp = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => console.log('google')}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => console.log('github')}
+        onClick={() => signIn('github')}
       />
       <div
         className="
