@@ -1,15 +1,17 @@
 'use client';
 
 import { AiFillGithub } from 'react-icons/ai';
-
+import axios from 'axios';
 import { FcGoogle } from 'react-icons/fc';
 import { useCallback, useState } from 'react';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { Heading } from '../common';
+import { toast } from 'react-hot-toast';
 import Input from '../inputs/Input';
 import { Button } from '../button';
 import { Modal } from '../modal';
 import { useLoginPopUp, useRegisterPopUp } from '@/app/zustand-hooks';
+import { signIn } from 'next-auth/react';
 
 const RegisterPopUp = () => {
   const registerPopUp = useRegisterPopUp();
@@ -30,6 +32,21 @@ const RegisterPopUp = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
+
+    axios
+      .post('/api/register', data)
+      .then(() => {
+        toast.success('Registered!');
+        registerPopUp.onClose();
+        loginPopUp.onOpen();
+      })
+      .catch((error) => {
+        toast.error(error);
+        console.log(error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const onToggle = useCallback(() => {
@@ -75,13 +92,13 @@ const RegisterPopUp = () => {
         outline
         label="Continue with Google"
         icon={FcGoogle}
-        onClick={() => console.log('google')}
+        onClick={() => signIn('google')}
       />
       <Button
         outline
         label="Continue with Github"
         icon={AiFillGithub}
-        onClick={() => console.log('github')}
+        onClick={() => signIn('github')}
       />
       <div
         className="
